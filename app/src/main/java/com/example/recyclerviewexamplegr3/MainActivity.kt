@@ -9,6 +9,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.recyclerviewexamplegr3.model.CarCollection
 import com.google.gson.Gson
 import org.json.JSONObject
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,13 +83,16 @@ val result = "{\n" +
         "}"
 
 
-//        findViewById<TextView>(R.id.output).text = JSONObject(result)
-//            .getJSONArray("data").getJSONObject(1).getString("name")
+        val carResponse = Gson().fromJson(result, CarCollection::class.java)
+        val carNames = carResponse.data.map { it.name }
+
+        val recyclerView = findViewById<RecyclerView>(R.id.carRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = CarAdapter(carNames)
 
 
-        val carResponse = Gson().fromJson<CarCollection>(result, CarCollection::class.java)
-        findViewById<TextView>(R.id.output)
-            .text = carResponse.data.get(2).name
+
+
 
 
 
